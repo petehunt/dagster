@@ -116,9 +116,9 @@ class QueuedRunCoordinatorDaemon(IntervalDaemon):
         # Possibly under 0 if runs were launched without queuing
         if max_runs_to_launch <= 0:
             self._logger.info(
-                "{} runs are currently in progress. Maximum is {}, won't launch more.".format(
-                    len(in_progress_runs), max_concurrent_runs
-                )
+                "%d runs are currently in progress. Maximum is %d, won't launch more.",
+                len(in_progress_runs),
+                max_concurrent_runs,
             )
             return
 
@@ -127,7 +127,7 @@ class QueuedRunCoordinatorDaemon(IntervalDaemon):
         if not queued_runs:
             self._logger.debug("Poll returned no queued runs.")
         else:
-            self._logger.info("Retrieved {} queued runs, checking limits.".format(len(queued_runs)))
+            self._logger.info("Retrieved %d queued runs, checking limits.", len(queued_runs))
 
         # place in order
         sorted_runs = self._priority_sort(queued_runs)
@@ -171,7 +171,7 @@ class QueuedRunCoordinatorDaemon(IntervalDaemon):
             yield error_info
 
         if num_dequeued_runs > 0:
-            self._logger.info("Launched {} runs.".format(num_dequeued_runs))
+            self._logger.info("Launched %d runs.", num_dequeued_runs)
 
     def _get_queued_runs(self, instance):
         queued_runs_filter = RunsFilter(statuses=[PipelineRunStatus.QUEUED])
@@ -202,9 +202,9 @@ class QueuedRunCoordinatorDaemon(IntervalDaemon):
 
         if reloaded_run.status != PipelineRunStatus.QUEUED:
             self._logger.info(
-                "Run {run_id} is now {status} instead of QUEUED, skipping".format(
-                    run_id=reloaded_run.run_id, status=reloaded_run.status
-                )
+                "Run %s is now %s instead of QUEUED, skipping",
+                reloaded_run.run_id,
+                reloaded_run.status,
             )
             return
 
