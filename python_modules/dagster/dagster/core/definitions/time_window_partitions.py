@@ -37,7 +37,7 @@ class TimeWindowPartitionsDefinition(
         ],
     ),
 ):
-    def __new__(
+    def __new__(  # pylint: disable=arguments-differ
         cls,
         schedule_type: ScheduleType,
         start: Union[datetime, str],

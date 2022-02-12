@@ -33,7 +33,7 @@ _UPGRADING_INSTANCE = None
 
 @contextmanager
 def upgrading_instance(instance):
-    global _UPGRADING_INSTANCE  # pylint: disable=global-statement
+    global _UPGRADING_INSTANCE  # pylint: disable=global-statement,global-variable-not-assigned
     check.invariant(_UPGRADING_INSTANCE is None, "update already in progress")
     try:
         _UPGRADING_INSTANCE = instance
@@ -43,7 +43,7 @@ def upgrading_instance(instance):
 
 
 def get_currently_upgrading_instance():
-    global _UPGRADING_INSTANCE  # pylint: disable=global-statement
+    global _UPGRADING_INSTANCE  # pylint: disable=global-statement,global-variable-not-assigned
     check.invariant(_UPGRADING_INSTANCE is not None, "currently upgrading instance not set")
     return _UPGRADING_INSTANCE
 
