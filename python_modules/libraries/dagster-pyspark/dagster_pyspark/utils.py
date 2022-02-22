@@ -1,7 +1,8 @@
 import os
 import zipfile
 
-from dagster import check
+from dagster import TableColumn, TableSchema, TableSchemaMetadataValue, check
+from pyspark.sql.types import StructType
 
 
 def build_pyspark_zip(zip_file, path):
@@ -19,3 +20,9 @@ def build_pyspark_zip(zip_file, path):
                     continue
 
                 zf.write(abs_fname, os.path.relpath(os.path.join(root, fname), path))
+
+
+def struct_type_to_metadata(schema: StructType) -> TableSchemaMetadataValue:
+    return TableSchemaMetadataValue(
+        TableSchema([TableColumn(field.name, field.dataType.typeName()) for field in schema.fields])
+    )
