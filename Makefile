@@ -13,7 +13,10 @@ is_darwin := $(filter Darwin,$(uname))
 #   https://pylint.pycqa.org/en/latest/user_guide/run.html#parallel-execution
 #   https://github.com/PyCQA/pylint/issues/4874
 pylint:
-	pylint -j $(if $(is_darwin),1,0) `git ls-files '*.py'` --rcfile=.pylintrc
+	pylint -j $(if $(is_darwin),1,0) \
+	  `git ls-files {.buildkite,examples,integration_tests,helm,python_modules}'/**/*.py'`
+
+    # `git ls-files 'examples/**/*.py' 'python_modules/**/*.py' .buildkite/**/*.py``
 
 update_doc_snapshot:
 	pytest docs --snapshot-update
