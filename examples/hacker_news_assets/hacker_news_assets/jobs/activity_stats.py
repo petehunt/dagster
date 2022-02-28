@@ -35,7 +35,7 @@ def asset_metadata(_context, model_info):
 
 # this list has one element per dbt model
 assets = load_assets_from_dbt_manifest(
-    json.load(open(os.path.join(DBT_PROJECT_DIR, "target", "manifest.json"))),
+    json.load(open(os.path.join(DBT_PROJECT_DIR, "target", "manifest.json"), encoding="utf8")),
     runtime_metadata_fn=asset_metadata,
     io_manager_key="warehouse_io_manager",
 )
