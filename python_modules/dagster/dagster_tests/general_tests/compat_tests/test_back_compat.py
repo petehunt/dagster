@@ -555,8 +555,8 @@ def test_pipeline_run_dagster_run():
     ):
         pass
 
-    @_whitelist_for_serdes(legacy_env)  
-    class PipelineRunStatus(Enum):   # pylint: disable=unused-variable
+    @_whitelist_for_serdes(legacy_env)
+    class PipelineRunStatus(Enum):  # pylint: disable=unused-variable
         QUEUED = "QUEUED"
         NOT_STARTED = "NOT_STARTED"
 
