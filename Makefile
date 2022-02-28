@@ -16,9 +16,6 @@ pylint:
 	pylint -j $(if $(is_darwin),1,0) \
     `git ls-files {.buildkite,examples,integration_tests,helm,python_modules}'/**/*.py'`
 
-update_doc_snapshot:
-	pytest docs --snapshot-update
-
 # NOTE: See pyproject.toml [tool.black] for majority of black config. Only include/exclude options
 # and format targets should be specified here. Note there are separate pyproject.toml for the root
 # and examples/docs_snippets.
