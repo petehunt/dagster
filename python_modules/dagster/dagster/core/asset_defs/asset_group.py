@@ -2,7 +2,7 @@ import os
 import pkgutil
 import re
 from importlib import import_module
-from types import ModuleType
+from types import ModuleType   # pylint: disable=no-name-in-module; (false positive)
 from typing import (
     Any,
     Dict,

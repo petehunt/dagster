@@ -110,7 +110,7 @@ def package_metadata_value(label: str, value: RawMetadataValue) -> "MetadataEntr
             raise DagsterInvalidMetadata(
                 f'Could not resolve the metadata value for "{label}" to a JSON serializable value. '
                 "Consider wrapping the value with the appropriate MetadataValue type."
-            )
+            ) from None
 
     raise DagsterInvalidMetadata(
         f'Could not resolve the metadata value for "{label}" to a known type. '
