@@ -10,7 +10,7 @@ import threading
 import time
 from contextlib import contextmanager
 from datetime import timezone
-from types import MethodType   # pylint: disable=no-name-in-module (false positive)
+from types import MethodType   # pylint: disable=no-name-in-module; (false positive)
 
 import pendulum
 
