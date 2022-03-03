@@ -14,7 +14,7 @@ class SourceAsset(
             ("metadata_entries", Sequence[MetadataEntry]),
             ("io_manager_key", str),
             ("description", Optional[str]),
-            ("partitions", Optional[PartitionsDefinition]),
+            ("partitions_def", Optional[PartitionsDefinition]),
         ],
     )
 ):
@@ -37,7 +37,7 @@ class SourceAsset(
         metadata: Optional[Dict[str, Any]] = None,
         io_manager_key: str = "io_manager",
         description: Optional[str] = None,
-        partitions: Optional[PartitionsDefinition] = None,
+        partitions_def: Optional[PartitionsDefinition] = None,
     ):
 
         metadata = check.opt_dict_param(metadata, "metadata", key_type=str)
@@ -52,7 +52,7 @@ class SourceAsset(
             metadata_entries=metadata_entries,
             io_manager_key=check.str_param(io_manager_key, "io_manager_key"),
             description=check.opt_str_param(description, "description"),
-            partitions=check.opt_inst_param(partitions, "partitions", PartitionsDefinition),
+            partitions_def=check.opt_inst_param(partitions_def, "partitions_def", PartitionsDefinition),
         )
 
     @property
