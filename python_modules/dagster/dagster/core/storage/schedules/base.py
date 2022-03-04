@@ -15,7 +15,7 @@ class ScheduleStorage(abc.ABC, MayHaveInstanceWeakref):
 
     @abc.abstractmethod
     def all_instigator_state(
-        self, repository_origin_id: str = None, instigator_type: InstigatorType = None
+        self, repository_origin_id: Optional[str] = None, instigator_type: Optional[InstigatorType] = None
     ) -> Iterable[InstigatorState]:
         """Return all InstigationStates present in storage
 
@@ -58,7 +58,7 @@ class ScheduleStorage(abc.ABC, MayHaveInstanceWeakref):
 
     @abc.abstractmethod
     def get_ticks(
-        self, origin_id: str, before: float = None, after: float = None, limit: int = None
+        self, origin_id: str, before: Optional[float] = None, after: Optional[float] = None, limit: Optional[int] = None
     ) -> Iterable[InstigatorTick]:
         """Get the ticks for a given instigator.
 
