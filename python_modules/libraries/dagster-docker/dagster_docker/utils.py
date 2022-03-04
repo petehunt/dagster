@@ -1,13 +1,9 @@
 from docker_image import reference
 
 from dagster import Array, Field, Permissive, StringSource, check
+from dagster.utils import merge_dicts
 
-DOCKER_CONFIG_SCHEMA = {
-    "image": Field(
-        StringSource,
-        is_required=False,
-        description="The docker image to be used if the repository does not specify one.",
-    ),
+DOCKER_CONTAINER_CONTEXT_SCHEMA = {
     "registry": Field(
         {
             "url": Field(StringSource),
@@ -22,16 +18,6 @@ DOCKER_CONFIG_SCHEMA = {
         is_required=False,
         description="The list of environment variables names to forward to the docker container",
     ),
-    "network": Field(
-        StringSource,
-        is_required=False,
-        description="Name of the network to which to connect the launched container at creation time",
-    ),
-    "networks": Field(
-        Array(StringSource),
-        is_required=False,
-        description="Names of the networks to which to connect the launched container at creation time",
-    ),
     "container_kwargs": Field(
         Permissive(),
         is_required=False,
@@ -39,7 +25,28 @@ DOCKER_CONFIG_SCHEMA = {
         "https://docker-py.readthedocs.io/en/stable/containers.html for the full list "
         "of available options.",
     ),
+    "networks": Field(
+        Array(StringSource),
+        is_required=False,
+        description="Names of the networks to which to connect the launched container at creation time",
+    ),
 }
+
+DOCKER_CONFIG_SCHEMA = merge_dicts(
+    {
+        "image": Field(
+            StringSource,
+            is_required=False,
+            description="The docker image to be used if the repository does not specify one.",
+        ),
+        "network": Field(
+            StringSource,
+            is_required=False,
+            description="Name of the network to which to connect the launched container at creation time",
+        ),
+    },
+    DOCKER_CONTAINER_CONTEXT_SCHEMA,
+)
 
 
 def validate_docker_config(network, networks, container_kwargs):
@@ -54,12 +61,12 @@ def validate_docker_config(network, networks, container_kwargs):
 
         if "environment" in container_kwargs:
             raise Exception(
-                "'environment' cannot be used in 'container_kwargs'. Use the 'environment' config key instead."
+                "'environment' cannot be used in 'container_kwargs'. Use the 'env_vars' config key instead."
             )
 
         if "network" in container_kwargs:
             raise Exception(
-                "'network' cannot be used in 'container_kwargs'. Use the 'network' config key instead."
+                "'network' cannot be used in 'container_kwargs'. Use the 'networks' config key instead."
             )
 
 
