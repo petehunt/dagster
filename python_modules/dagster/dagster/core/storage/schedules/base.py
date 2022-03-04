@@ -1,5 +1,5 @@
 import abc
-from typing import Iterable
+from typing import Iterable, Optional
 
 from dagster.core.definitions.run_request import InstigatorType
 from dagster.core.instance import MayHaveInstanceWeakref
