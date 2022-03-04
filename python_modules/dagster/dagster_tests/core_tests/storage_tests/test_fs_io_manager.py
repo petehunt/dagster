@@ -42,7 +42,7 @@ def test_fs_io_manager():
 
         filepath_a = os.path.join(tmpdir_path, result.run_id, "solid_a", "result")
         assert os.path.isfile(filepath_a)
-        with open(filepath_a, "rb", encoding="utf8") as read_obj:
+        with open(filepath_a, "rb") as read_obj:
             assert pickle.load(read_obj) == [1, 2, 3]
 
         loaded_input_events = list(filter(lambda evt: evt.is_loaded_input, result.event_list))
@@ -51,7 +51,7 @@ def test_fs_io_manager():
 
         filepath_b = os.path.join(tmpdir_path, result.run_id, "solid_b", "result")
         assert os.path.isfile(filepath_b)
-        with open(filepath_b, "rb", encoding="utf8") as read_obj:
+        with open(filepath_b, "rb") as read_obj:
             assert pickle.load(read_obj) == 1
 
 
@@ -68,7 +68,6 @@ def test_fs_io_manager_base_dir():
         with open(
             os.path.join(instance.storage_directory(), result.run_id, "solid_a", "result"),
             "rb",
-            encoding="utf8",
         ) as read_obj:
             assert pickle.load(read_obj) == [1, 2, 3]
 

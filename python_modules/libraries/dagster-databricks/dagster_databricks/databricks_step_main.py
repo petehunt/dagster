@@ -81,20 +81,20 @@ def main(
         site.addsitedir(tmp)
 
         # We can use regular local filesystem APIs to access DBFS inside the Databricks runtime.
-        with open(setup_filepath, "rb", encoding="utf8") as handle:
+        with open(setup_filepath, "rb") as handle:
             databricks_config = pickle.load(handle)
 
         # sc and dbutils are globally defined in the Databricks runtime.
         databricks_config.setup(dbutils, sc)  # noqa pylint: disable=undefined-variable
 
-        with open(step_run_ref_filepath, "rb", encoding="utf8") as handle:
+        with open(step_run_ref_filepath, "rb") as handle:
             step_run_ref = pickle.load(handle)
         print("Running dagster job")  # noqa pylint: disable=print-call
 
         events_filepath = os.path.dirname(step_run_ref_filepath) + "/" + PICKLED_EVENTS_FILE_NAME
 
         def put_events(events):
-            with open(events_filepath, "wb", encoding="utf8") as handle:
+            with open(events_filepath, "wb") as handle:
                 pickle.dump(serialize_value(events), handle)
 
         # Set up a thread to handle writing events back to the plan process, so execution doesn't get
@@ -124,13 +124,13 @@ def main(
                 event_writing_thread.join()
                 # write final stdout and stderr
                 with open(
-                    os.path.dirname(step_run_ref_filepath) + "/stderr", "wb", encoding="utf8"
+                    os.path.dirname(step_run_ref_filepath) + "/stderr", "wb"
                 ) as handle:
                     stderr_str = stderr.getvalue()
                     sys.stderr.write(stderr_str)
                     handle.write(stderr_str.encode())
                 with open(
-                    os.path.dirname(step_run_ref_filepath) + "/stdout", "wb", encoding="utf8"
+                    os.path.dirname(step_run_ref_filepath) + "/stdout", "wb"
                 ) as handle:
                     stdout_str = stdout.getvalue()
                     sys.stdout.write(stdout_str)
