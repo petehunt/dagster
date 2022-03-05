@@ -1,22 +1,11 @@
+import inspect
 import os
 import pkgutil
 import re
 from importlib import import_module
 from types import ModuleType
-from typing import (
-    Any,
-    Dict,
-    Iterable,
-    List,
-    Mapping,
-    NamedTuple,
-    Optional,
-    Sequence,
-    Set,
-    Tuple,
-    Union,
-    cast,
-)
+from typing import (Any, Dict, Iterable, List, Mapping, NamedTuple, Optional, Sequence, Set, Tuple,
+                    Union, cast)
 
 from dagster import check
 from dagster.core.storage.fs_asset_io_manager import fs_asset_io_manager
@@ -439,6 +428,28 @@ class AssetGroup(
             resource_defs=resource_defs,
             executor_def=executor_def,
         )
+
+    @staticmethod
+    def from_current_module(
+        resource_defs: Optional[Mapping[str, ResourceDefinition]] = None,
+        executor_def: Optional[ExecutorDefinition] = None,
+    ) -> "AssetGroup":
+        """
+        Constructs an AssetGroup that includes all asset definitions and source assets in the module
+        where this is called from.
+
+        Args:
+            resource_defs (Optional[Mapping[str, ResourceDefinition]]): A dictionary of resource
+                definitions to include on the returned asset group.
+            executor_def (Optional[ExecutorDefinition]): An executor to include on the returned
+                asset group.
+
+        Returns:
+            AssetGroup: An asset group with all the assets defined in the module.
+        """
+        caller = inspect.stack()[1]
+        module = inspect.getmodule(caller[0])
+        return AssetGroup.from_modules([module], resource_defs, executor_def)
 
 
 def _find_assets_in_module(

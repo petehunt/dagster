@@ -1,19 +1,8 @@
 import pytest
 
-from dagster import (
-    AssetKey,
-    DagsterInvalidDefinitionError,
-    IOManager,
-    Out,
-    fs_asset_io_manager,
-    graph,
-    in_process_executor,
-    io_manager,
-    job,
-    mem_io_manager,
-    repository,
-    resource,
-)
+from dagster import (AssetKey, DagsterInvalidDefinitionError, IOManager, Out, fs_asset_io_manager,
+                     graph, in_process_executor, io_manager, job, mem_io_manager, repository,
+                     resource)
 from dagster.core.asset_defs import AssetGroup, AssetIn, SourceAsset, asset, multi_asset
 
 
@@ -365,6 +354,24 @@ def test_asset_group_from_modules():
     assert {source_asset.key for source_asset in collection.source_assets} == {
         AssetKey("elvis_presley")
     }
+
+
+@asset
+def asset_in_current_module():
+    pass
+
+
+source_asset_in_current_module = SourceAsset(AssetKey("source_asset_in_current_module"))
+
+
+def test_asset_group_from_current_module():
+    group = AssetGroup.from_current_module()
+    assert {asset.op.name for asset in group.assets} == {"asset_in_current_module"}
+    assert len(group.assets) == 1
+    assert {source_asset.key for source_asset in group.source_assets} == {
+        AssetKey("source_asset_in_current_module")
+    }
+    assert len(group.source_assets) == 1
 
 
 def test_default_io_manager():
