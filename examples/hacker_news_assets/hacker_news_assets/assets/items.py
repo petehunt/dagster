@@ -2,14 +2,15 @@
 
 from typing import Tuple
 
-from hacker_news_assets.partitions import hourly_partitions
 from pandas import DataFrame
 from pyspark.sql import DataFrame as SparkDF
 from pyspark.sql.types import ArrayType, DoubleType, LongType, StringType, StructField, StructType
 
 from dagster import Output, asset
+from dagster_pyspark import struct_type_to_metadata
+from hacker_news_assets.partitions import hourly_partitions
 
-HN_ITEMS_SCHEMA = StructType(
+HN_ITEMS_STRUCT_TYPE = StructType(
     [
         StructField("id", LongType()),
         StructField("parent", DoubleType()),
@@ -24,14 +25,16 @@ HN_ITEMS_SCHEMA = StructType(
         StructField("url", StringType()),
     ]
 )
+HN_ITEMS_TABLE_SCHEMA = struct_type_to_metadata(HN_ITEMS_STRUCT_TYPE)
 
-ITEM_FIELD_NAMES = [field.name for field in HN_ITEMS_SCHEMA.fields]
+ITEM_FIELD_NAMES = [field.name for field in HN_ITEMS_STRUCT_TYPE.fields]
 
 
 @asset(
     io_manager_key="parquet_io_manager",
     required_resource_keys={"hn_client"},
     partitions_def=hourly_partitions,
+    metadata={"schema": HN_ITEMS_TABLE_SCHEMA},
 )
 def items(context, id_range_for_time: Tuple[int, int]):
     """Items from the Hacker News API: each is a story or a comment on a story."""
@@ -55,11 +58,19 @@ def items(context, id_range_for_time: Tuple[int, int]):
     )
 
 
-@asset(io_manager_key="warehouse_io_manager", partitions_def=hourly_partitions)
+@asset(
+    io_manager_key="warehouse_io_manager",
+    partitions_def=hourly_partitions,
+    metadata={"schema": HN_ITEMS_TABLE_SCHEMA},
+)
 def comments(items: SparkDF) -> SparkDF:
     return items.where(items["type"] == "comment")
 
 
-@asset(io_manager_key="warehouse_io_manager", partitions_def=hourly_partitions)
+@asset(
+    io_manager_key="warehouse_io_manager",
+    partitions_def=hourly_partitions,
+    metadata={"schema": HN_ITEMS_TABLE_SCHEMA},
+)
 def stories(items: SparkDF) -> SparkDF:
     return items.where(items["type"] == "stories")
