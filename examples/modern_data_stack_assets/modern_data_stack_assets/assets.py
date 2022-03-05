@@ -8,7 +8,7 @@ from scipy import optimize
 
 from dagster import AssetGroup, asset
 
-from .constants import *   # pylint: disable=wildcard-import,unused-wildcard-import
+from .constants import *  # pylint: disable=wildcard-import,unused-wildcard-import
 from .pandas_io_manager import pandas_io_manager
 
 airbyte_assets = build_airbyte_assets(
