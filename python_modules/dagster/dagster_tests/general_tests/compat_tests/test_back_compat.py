@@ -728,7 +728,7 @@ def test_legacy_event_log_load():
         whitelist_map=legacy_env,
         storage_name="EventLogEntry",  # use this to avoid collision with current EventLogEntry
     )
-    class OldEventLogEntry(
+    class OldEventLogEntry(   # pylint: disable=unused-variable
         NamedTuple(
             "_OldEventLogEntry",
             [

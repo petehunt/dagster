@@ -9,7 +9,6 @@ from dagster import (
     graph,
     in_process_executor,
     io_manager,
-    job,
     mem_io_manager,
     repository,
     resource,
@@ -377,7 +376,7 @@ def test_default_io_manager():
         group.resource_defs["io_manager"]  # pylint: disable=comparison-with-callable
         == fs_asset_io_manager
     )
-    assert group.resource_defs["io_manager"] == fs_asset_io_manager
+    assert group.resource_defs["io_manager"] == fs_asset_io_manager   # pylint: disable=comparison-with-callable
 
 
 def test_repo_with_multiple_asset_groups():
