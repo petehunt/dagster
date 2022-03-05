@@ -14,7 +14,7 @@ def _reconstruct_from_file(hostname, path, _username="root", _password="test"):
     subprocess.check_call(f"mysql -uroot -h{hostname} test < {path}", shell=True, env=env)
 
 
-def test_0_13_17_mysql_convert_float_cols(hostname, _conn_string):
+def test_0_13_17_mysql_convert_float_cols(hostname):
     _reconstruct_from_file(
         hostname,
         file_relative_path(__file__, "snapshot_0_13_18_start_end_timestamp.sql"),
