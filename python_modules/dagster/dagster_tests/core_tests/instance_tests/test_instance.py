@@ -201,7 +201,7 @@ class TestNonResumeRunLauncher(RunLauncher, ConfigurableClass):
         return True
 
 
-def test_run_monitoring(_capsys):
+def test_run_monitoring(capsys):  # pylint: disable=unused-argument
     with instance_for_test(
         overrides={
             "run_monitoring": {"enabled": True},
