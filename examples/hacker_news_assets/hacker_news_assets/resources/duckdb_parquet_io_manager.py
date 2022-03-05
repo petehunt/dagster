@@ -16,9 +16,10 @@ class DuckDBPartitionedParquetIOManager(PartitionedParquetIOManager):
 
         path = self._get_path(context)
         folder = os.path.dirname(path)
-        con.execute(f"create schema hackernews;")
+        con.execute(f"create schema if not exists hackernews;")
         con.execute(
-            f"create view hackernews.{context.asset_key.path[-1]} as select * from parquet_scan('{folder}/*.pq');"
+            f"create or replace view hackernews.{context.asset_key.path[-1]} as "
+            f"select * from parquet_scan('{folder}/*.pq/*.parquet');"
         )
 
 
