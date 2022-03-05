@@ -1,8 +1,7 @@
 from datetime import datetime, timezone
 
-from hacker_news_assets.partitions import hourly_partitions
-
 from dagster import MetadataEntry, Output, asset, check
+from hacker_news_assets.partitions import hourly_partitions
 
 
 def binary_search_nearest_left(get_value, start, end, min_target):
@@ -56,6 +55,8 @@ def _id_range_for_time(start: int, end: int, hn_client):
 
     def _get_item_timestamp(item_id):
         item = hn_client.fetch_item_by_id(item_id)
+        if not item:
+            raise ValueError(f"No item with id {item_id}")
         return item["time"]
 
     max_item_id = hn_client.fetch_max_item_id()

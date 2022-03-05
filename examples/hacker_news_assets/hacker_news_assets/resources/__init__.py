@@ -8,15 +8,17 @@ from dagster import ResourceDefinition
 from dagster.utils import file_relative_path
 
 from .common_bucket_s3_pickle_io_manager import common_bucket_s3_pickle_io_manager
+from .duckdb_parquet_io_manager import duckdb_partitioned_parquet_io_manager
 from .hn_resource import hn_api_subsample_client, hn_snapshot_client
-from .parquet_io_manager import (
-    local_partitioned_parquet_io_manager,
-    s3_partitioned_parquet_io_manager,
-)
+from .parquet_io_manager import (local_partitioned_parquet_io_manager,
+                                 s3_partitioned_parquet_io_manager)
 from .snowflake_io_manager import snowflake_io_manager
 
 DBT_PROJECT_DIR = file_relative_path(__file__, "../../hacker_news_dbt")
 DBT_PROFILES_DIR = DBT_PROJECT_DIR + "/config"
+dbt_local_resource = dbt_cli_resource.configured(
+    {"profiles_dir": DBT_PROFILES_DIR, "project_dir": DBT_PROJECT_DIR, "target": "local"}
+)
 dbt_staging_resource = dbt_cli_resource.configured(
     {"profiles-dir": DBT_PROFILES_DIR, "project-dir": DBT_PROJECT_DIR, "target": "staging"}
 )
@@ -78,9 +80,9 @@ RESOURCES_STAGING = {
 
 RESOURCES_LOCAL = {
     "parquet_io_manager": local_partitioned_parquet_io_manager,
-    "warehouse_io_manager": local_partitioned_parquet_io_manager,
+    "warehouse_io_manager": duckdb_partitioned_parquet_io_manager,
     "pyspark": configured_pyspark,
     "warehouse_loader": snowflake_io_manager_prod,
-    "hn_client": hn_snapshot_client,
-    "dbt": ResourceDefinition.none_resource(),
+    "hn_client": hn_api_subsample_client.configured({"sample_rate": 10}),
+    "dbt": dbt_local_resource,
 }
