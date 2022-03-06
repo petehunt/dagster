@@ -3,7 +3,7 @@ hacker_news_dbt:
   outputs:
     local:
       type: duckdb
-      path: /Users/sryza/duckdb
+      path: hn_duckdb.duckdb
 
     staging:
       type: snowflake

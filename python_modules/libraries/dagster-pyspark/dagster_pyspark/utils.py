@@ -1,8 +1,9 @@
 import os
 import zipfile
 
-from dagster import TableColumn, TableSchema, TableSchemaMetadataValue, check
 from pyspark.sql.types import StructType
+
+from dagster import TableColumn, TableSchema, TableSchemaMetadataValue, check
 
 
 def build_pyspark_zip(zip_file, path):

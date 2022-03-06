@@ -9,9 +9,11 @@ from dagster.utils import file_relative_path
 
 from .common_bucket_s3_pickle_io_manager import common_bucket_s3_pickle_io_manager
 from .duckdb_parquet_io_manager import duckdb_partitioned_parquet_io_manager
-from .hn_resource import hn_api_subsample_client, hn_snapshot_client
-from .parquet_io_manager import (local_partitioned_parquet_io_manager,
-                                 s3_partitioned_parquet_io_manager)
+from .hn_resource import hn_api_subsample_client
+from .parquet_io_manager import (
+    local_partitioned_parquet_io_manager,
+    s3_partitioned_parquet_io_manager,
+)
 from .snowflake_io_manager import snowflake_io_manager
 
 DBT_PROJECT_DIR = file_relative_path(__file__, "../../hacker_news_dbt")
@@ -80,7 +82,9 @@ RESOURCES_STAGING = {
 
 RESOURCES_LOCAL = {
     "parquet_io_manager": local_partitioned_parquet_io_manager,
-    "warehouse_io_manager": duckdb_partitioned_parquet_io_manager,
+    "warehouse_io_manager": duckdb_partitioned_parquet_io_manager.configured(
+        {"duckdb_path": "hn_duckdb.duckdb"}
+    ),
     "pyspark": configured_pyspark,
     "warehouse_loader": snowflake_io_manager_prod,
     "hn_client": hn_api_subsample_client.configured({"sample_rate": 10}),
