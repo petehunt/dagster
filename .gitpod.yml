@@ -1,2 +1,6 @@
 tasks:
-- command: make dev_install
+- init: make dev_install
+
+ports:
+  - port: 3000
+    onOpen: open-browser
