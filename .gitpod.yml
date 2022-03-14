@@ -10,6 +10,7 @@ tasks:
     cd /workspace
     unzip -q venv.zip
     source /workspace/venv/bin/activate
+    cd /workspace/dagster
 
 ports:
   - port: 3000
