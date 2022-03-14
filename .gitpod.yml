@@ -1,5 +1,9 @@
 tasks:
-- init: make dev_install
+- init: |
+    python3 -m venv /workspace/venv
+    source /workspace/venv/bin/activate
+    make dev_install
+- command: source /workspace/venv/bin/activate
 
 ports:
   - port: 3000
