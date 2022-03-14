@@ -7,8 +7,6 @@
 <a href="https://dagster-slackin.herokuapp.com/"><img src="https://dagster-slackin.herokuapp.com/badge.svg"></a>
 </p>
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/petehunt/dagster)
-
 # Dagster
 
 An orchestration platform for the development, production, and observation of data assets.
@@ -162,3 +160,5 @@ Dagster works with the tools and systems that you're already using with your dat
 </table>
 
 This list is growing as we are actively building more integrations, and we welcome contributions!
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/petehunt/dagster)
